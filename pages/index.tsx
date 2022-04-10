@@ -77,7 +77,7 @@ const Home = ({
           </Typography>
         </Box>
         <Box display="flex" mb={2}>
-          <Box mx={1}>
+          <Box mx={1} display="flex" alignItems="stretch">
             <Button
               variant={sortMode === "price" ? "contained" : "outlined"}
               onClick={() => setSortMode("price")}
@@ -85,7 +85,7 @@ const Home = ({
               Sort By Lowest Price
             </Button>
           </Box>
-          <Box mx={1}>
+          <Box mx={1} display="flex" alignItems="stretch">
             <Button
               variant={sortMode === "ratio" ? "contained" : "outlined"}
               onClick={() => setSortMode("ratio")}
