@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import useSWR from "swr";
 
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -25,9 +26,12 @@ import { performanceCalculator } from "../utils/performanceCalculator";
 import { getSortFunction } from "../utils/sortFunctionByMode";
 import {
   castMagicatsSalesData,
-  getMagicatsData,
-  MagicatAPI,
-} from "../utils/getMagicatData";
+  MAGIC_CATS_URL,
+  MagicatsAPI,
+  MagicatsSaleData,
+} from "../utils/magicatsUtil";
+import { Twitter } from "@mui/icons-material";
+import { fetcher } from "../utils/fetcher";
 
 const BackToTop = dynamic(() => import("../components/BackToTop"), {
   ssr: false,
@@ -37,6 +41,16 @@ const Home = ({
   sales,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [sortMode, setSortMode] = useState<"price" | "ratio">("ratio");
+  const { data } = useSWR<MagicatsAPI>(MAGIC_CATS_URL, fetcher, {
+    refreshInterval: 60000,
+  });
+  const [salesData, setSalesData] = useState<MagicatsSaleData[]>(sales);
+
+  useEffect(() => {
+    if (data) {
+      setSalesData(castMagicatsSalesData(data.sales));
+    }
+  }, [data]);
 
   return (
     <Container maxWidth="lg">
@@ -140,7 +154,7 @@ const Home = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {sales
+              {salesData
                 .filter((sale) => !sale.isAuction)
                 .sort(getSortFunction(sortMode))
                 .map((sale) => {
@@ -184,15 +198,15 @@ const Home = ({
   );
 };
 
-interface ServerSideProps extends MagicatAPI {}
+interface ServerSideProps extends MagicatsAPI {}
 
 export const getServerSideProps: GetServerSideProps<
   ServerSideProps
 > = async () => {
-  const res = await getMagicatsData();
+  const { sales } = await fetcher<MagicatsAPI>(MAGIC_CATS_URL);
   return {
     props: {
-      sales: castMagicatsSalesData(res.data.sales),
+      sales: castMagicatsSalesData(sales),
     },
   };
 };
