@@ -17,6 +17,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 
 import Copyright from "../components/Copyright";
 import Link from "../components/Link";
@@ -41,10 +42,26 @@ const Home = ({
   sales,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [sortMode, setSortMode] = useState<"price" | "ratio">("ratio");
-  const { data } = useSWR<MagicatsAPI>(MAGIC_CATS_URL, fetcher, {
-    refreshInterval: 60000,
-  });
   const [salesData, setSalesData] = useState<MagicatsSaleData[]>(sales);
+  const [counter, setCounter] = useState(0);
+  const { data, mutate, isValidating } = useSWR<MagicatsAPI>(
+    MAGIC_CATS_URL,
+    fetcher,
+    {
+      refreshInterval: 60000,
+      onSuccess: () => setCounter(0),
+    }
+  );
+
+  useEffect(() => {
+    const interval = setInterval(
+      () => setCounter((counter) => counter + 1),
+      1000
+    );
+    return () => {
+      clearTimeout(interval);
+    };
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -138,6 +155,25 @@ const Home = ({
               Sort By Highest MP / FTM Ratio
             </Button>
           </Box>
+        </Box>
+        <Box width="100%" display="flex" justifyContent="flex-end" color="gray">
+          <LoadingButton
+            sx={{
+              textTransform: "none",
+              "&.MuiButtonBase-root:hover": {
+                bgcolor: "transparent",
+              },
+            }}
+            loading={isValidating}
+            disabled={isValidating}
+            disableElevation
+            disableRipple
+            variant="text"
+            color="inherit"
+            onClick={() => mutate()}
+          >
+            Last updated: {counter}s ago
+          </LoadingButton>
         </Box>
         <TableContainer component={Paper} elevation={2}>
           <Table sx={{ minWidth: 650 }} aria-label="magicats table">
