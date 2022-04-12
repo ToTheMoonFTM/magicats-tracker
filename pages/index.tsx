@@ -28,10 +28,10 @@ import { getSortFunction } from "../utils/sortFunctionByMode";
 import {
   castMagicatsSalesData,
   MAGIC_CATS_URL,
+  magicatFetcher,
   MagicatsAPI,
   MagicatsSaleData,
 } from "../utils/magicatsUtil";
-import { Twitter } from "@mui/icons-material";
 import { fetcher } from "../utils/fetcher";
 
 const BackToTop = dynamic(() => import("../components/BackToTop"), {
@@ -42,13 +42,13 @@ const Home = ({
   sales,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [sortMode, setSortMode] = useState<"price" | "ratio">("ratio");
-  const [salesData, setSalesData] = useState<MagicatsSaleData[]>(sales);
   const [counter, setCounter] = useState(0);
-  const { data, mutate, isValidating } = useSWR<MagicatsAPI>(
+  const { data, mutate, isValidating } = useSWR<MagicatsSaleData[]>(
     MAGIC_CATS_URL,
-    fetcher,
+    magicatFetcher,
     {
       refreshInterval: 60000,
+      fallbackData: sales,
       onSuccess: () => setCounter(0),
     }
   );
@@ -62,12 +62,6 @@ const Home = ({
       clearTimeout(interval);
     };
   }, []);
-
-  useEffect(() => {
-    if (data) {
-      setSalesData(castMagicatsSalesData(data.sales));
-    }
-  }, [data]);
 
   return (
     <Container maxWidth="lg">
@@ -190,40 +184,41 @@ const Home = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {salesData
-                .filter((sale) => !sale.isAuction)
-                .sort(getSortFunction(sortMode))
-                .map((sale) => {
-                  const catData = CAT_DATA[sale.tokenId];
-                  return (
-                    <TableRow key={sale.id}>
-                      <TableCell>{sale.tokenId}</TableCell>
-                      <TableCell>
-                        <Image
-                          src={`https://media-nft.paintswap.finance/250_0x2ab5c606a5aa2352f8072b9e2e8a213033e2c4c9_${sale.tokenId}.png`}
-                          alt={`magicat #${sale.tokenId}`}
-                          width={100}
-                          height={100}
-                        />
-                      </TableCell>
-                      <TableCell>{catData.name}</TableCell>
-                      <TableCell>{catData.rank}</TableCell>
-                      <TableCell>{Math.floor(catData.score)}</TableCell>
-                      <TableCell>{priceHandler(sale.price)} FTM</TableCell>
-                      <TableCell>
-                        {performanceCalculator(catData.score, sale.price)}
-                      </TableCell>
-                      <TableCell>
-                        <Link
-                          target="_blank"
-                          href={`https://paintswap.finance/marketplace/${sale.id}`}
-                        >
-                          link
-                        </Link>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+              {data &&
+                data
+                  .filter((sale) => !sale.isAuction)
+                  .sort(getSortFunction(sortMode))
+                  .map((sale) => {
+                    const catData = CAT_DATA[sale.tokenId];
+                    return (
+                      <TableRow key={sale.id}>
+                        <TableCell>{sale.tokenId}</TableCell>
+                        <TableCell>
+                          <Image
+                            src={`https://media-nft.paintswap.finance/250_0x2ab5c606a5aa2352f8072b9e2e8a213033e2c4c9_${sale.tokenId}.png`}
+                            alt={`Magicat #${sale.tokenId}`}
+                            width={100}
+                            height={100}
+                          />
+                        </TableCell>
+                        <TableCell>{catData.name}</TableCell>
+                        <TableCell>{catData.rank}</TableCell>
+                        <TableCell>{Math.floor(catData.score)}</TableCell>
+                        <TableCell>{priceHandler(sale.price)} FTM</TableCell>
+                        <TableCell>
+                          {performanceCalculator(catData.score, sale.price)}
+                        </TableCell>
+                        <TableCell>
+                          <Link
+                            target="_blank"
+                            href={`https://paintswap.finance/marketplace/${sale.id}`}
+                          >
+                            link
+                          </Link>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
             </TableBody>
           </Table>
         </TableContainer>
