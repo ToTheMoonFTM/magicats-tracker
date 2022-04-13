@@ -36,6 +36,10 @@ const BackToTop = dynamic(() => import("../components/BackToTop"), {
   ssr: false,
 });
 
+const TwitterButton = dynamic(() => import("../components/TwitterButton"), {
+  ssr: false,
+});
+
 const Home = ({
   sales,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
@@ -75,14 +79,7 @@ const Home = ({
         <Typography variant="h4" component="h1" gutterBottom>
           Magicats Tracker
         </Typography>
-        <Link
-          sx={{ color: "#1da1f2" }}
-          target="_blank"
-          href="https://twitter.com/FTM_To_The_Moon"
-          aria-label="twitter link"
-        >
-          Twitter
-        </Link>
+        <TwitterButton />
         <Box
           component={Paper}
           mt={1}
