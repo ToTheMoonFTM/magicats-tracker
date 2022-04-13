@@ -8,7 +8,6 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import {
   Button,
-  Link,
   Paper,
   Table,
   TableBody,
@@ -19,6 +18,7 @@ import {
 } from "@mui/material";
 
 import Copyright from "../components/Copyright";
+import Link from "../components/Link";
 import { priceHandler } from "../utils/priceHandler";
 import { CAT_DATA } from "../utils/catData";
 import { performanceCalculator } from "../utils/performanceCalculator";
@@ -52,25 +52,60 @@ const Home = ({
         <Typography variant="h4" component="h1" gutterBottom>
           Magicats Tracker
         </Typography>
-        <Box my={1}>
-          <Typography component="h1" gutterBottom>
-            Credits:{" "}
-            <Link
-              target="_blank"
-              href="https://paintswap.finance/"
-              underline="hover"
-            >
-              PaintSwap
-            </Link>
-            , and King (Mod from SpookySwap) for his{" "}
-            <Link
-              target="_blank"
-              href="https://docs.google.com/spreadsheets/d/1NS1VFfALpGe9anjCJNaNFXZXTxnvUcq1EbSIU_psSsQ/edit#gid=789621007&fvid=710219763"
-              underline="hover"
-            >
-              Magicats Rarity Data Sheet
-            </Link>
-          </Typography>
+        <Link
+          sx={{ color: "#1da1f2" }}
+          target="_blank"
+          href="https://twitter.com/FTM_To_The_Moon"
+          aria-label="twitter link"
+        >
+          Twitter
+        </Link>
+        <Box
+          component={Paper}
+          mt={1}
+          mb={3}
+          p={3}
+          display="flex"
+          flexDirection="column"
+          variant="outlined"
+        >
+          <Typography>Credits:</Typography>
+          <ul>
+            <li>
+              <Typography>
+                <Link
+                  target="_blank"
+                  href="https://spookyswap.finance/magicats"
+                  underline="hover"
+                >
+                  SpookySwap
+                </Link>
+              </Typography>
+            </li>
+            <li>
+              <Typography>
+                <Link
+                  target="_blank"
+                  href="https://paintswap.finance/marketplace/collections/0x2ab5c606a5aa2352f8072b9e2e8a213033e2c4c9"
+                  underline="hover"
+                >
+                  PaintSwap
+                </Link>
+              </Typography>
+            </li>
+            <li>
+              <Typography>
+                <Link
+                  target="_blank"
+                  href="https://docs.google.com/spreadsheets/d/1NS1VFfALpGe9anjCJNaNFXZXTxnvUcq1EbSIU_psSsQ/edit#gid=789621007&fvid=710219763"
+                  underline="hover"
+                >
+                  Magicats Rarity Data Sheet
+                </Link>{" "}
+                by King (Mod from SpookySwap)
+              </Typography>
+            </li>
+          </ul>
         </Box>
         <Box display="flex" mb={2}>
           <Box mx={1} display="flex" alignItems="stretch">
