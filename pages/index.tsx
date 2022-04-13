@@ -26,13 +26,11 @@ import { CAT_DATA } from "../utils/catData";
 import { performanceCalculator } from "../utils/performanceCalculator";
 import { getSortFunction } from "../utils/sortFunctionByMode";
 import {
-  castMagicatsSalesData,
   MAGIC_CATS_URL,
   magicatFetcher,
   MagicatsAPI,
   MagicatsSaleData,
 } from "../utils/magicatsUtil";
-import { fetcher } from "../utils/fetcher";
 
 const BackToTop = dynamic(() => import("../components/BackToTop"), {
   ssr: false,
@@ -234,12 +232,8 @@ interface ServerSideProps extends MagicatsAPI {}
 export const getServerSideProps: GetServerSideProps<
   ServerSideProps
 > = async () => {
-  const { sales } = await fetcher<MagicatsAPI>(MAGIC_CATS_URL);
-  return {
-    props: {
-      sales: castMagicatsSalesData(sales),
-    },
-  };
+  const sales = await magicatFetcher(MAGIC_CATS_URL);
+  return { props: { sales } };
 };
 
 export default Home;
