@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@mui/material";
 
-import Copyright from "../src/Copyright";
+import Copyright from "../components/Copyright";
 import { priceHandler } from "../utils/priceHandler";
 import { CAT_DATA } from "../utils/catData";
 import { performanceCalculator } from "../utils/performanceCalculator";
@@ -29,7 +29,7 @@ import {
   MagicatAPI,
 } from "../utils/getMagicatData";
 
-const BackToTop = dynamic(() => import("../src/BackToTop"), {
+const BackToTop = dynamic(() => import("../components/BackToTop"), {
   ssr: false,
 });
 
