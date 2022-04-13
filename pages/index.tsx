@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import axios from "axios";
+
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -17,21 +17,17 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+
 import Copyright from "../src/Copyright";
 import { priceHandler } from "../utils/priceHandler";
 import { CAT_DATA } from "../utils/catData";
 import { performanceCalculator } from "../utils/performanceCalculator";
 import { getSortFunction } from "../utils/sortFunctionByMode";
-
-export interface MagicatSaleData {
-  id: string;
-  tokenId: number;
-  startTime: string;
-  endTime: string;
-  isAuction: boolean;
-  price: string;
-  seller: string;
-}
+import {
+  castMagicatsSalesData,
+  getMagicatsData,
+  MagicatAPI,
+} from "../utils/getMagicatData";
 
 const BackToTop = dynamic(() => import("../src/BackToTop"), {
   ssr: false,
@@ -120,6 +116,7 @@ const Home = ({
                       <TableCell>
                         <Image
                           src={`https://media-nft.paintswap.finance/250_0x2ab5c606a5aa2352f8072b9e2e8a213033e2c4c9_${sale.tokenId}.png`}
+                          alt={`magicat #${sale.tokenId}`}
                           width={100}
                           height={100}
                         />
@@ -152,21 +149,17 @@ const Home = ({
   );
 };
 
-interface MagicatAPI {
-  sales: MagicatSaleData[];
-}
-
-interface ServerSideProps {
-  sales: MagicatSaleData[];
-}
+interface ServerSideProps extends MagicatAPI {}
 
 export const getServerSideProps: GetServerSideProps<
   ServerSideProps
 > = async () => {
-  const res = await axios.get<MagicatAPI>(
-    "https://api.paintswap.finance/v2/sales?collections=0x2ab5c606a5aa2352f8072b9e2e8a213033e2c4c9&numToFetch=1000"
-  );
-  return { props: { sales: res.data.sales } };
+  const res = await getMagicatsData();
+  return {
+    props: {
+      sales: castMagicatsSalesData(res.data.sales),
+    },
+  };
 };
 
 export default Home;

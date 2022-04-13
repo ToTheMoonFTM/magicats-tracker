@@ -19,7 +19,8 @@
     "axios": "latest",
     "next": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "yup": "latest"
   },
   "devDependencies": {
     "@types/node": "latest",

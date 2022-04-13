@@ -1,6 +1,6 @@
 import { CAT_DATA } from "./catData";
 import { performanceCalculator } from "./performanceCalculator";
-import { MagicatSaleData } from "../pages";
+import { MagicatSaleData } from "./getMagicatData";
 
 type SortMode = "price" | "ratio";
 
