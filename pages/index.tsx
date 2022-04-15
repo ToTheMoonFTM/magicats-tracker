@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import useSWR from "swr";
@@ -9,7 +8,9 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import {
   Button,
+  NoSsr,
   Paper,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
@@ -28,9 +29,9 @@ import { getSortFunction } from "../utils/sortFunctionByMode";
 import {
   MAGIC_CATS_URL,
   magicatFetcher,
-  MagicatsAPI,
   MagicatsSaleData,
 } from "../utils/magicatsUtil";
+import TableSkeleton from "../components/TableSkeleton";
 
 const BackToTop = dynamic(() => import("../components/BackToTop"), {
   ssr: false,
@@ -40,9 +41,7 @@ const TwitterButton = dynamic(() => import("../components/TwitterButton"), {
   ssr: false,
 });
 
-const Home = ({
-  sales,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Home = () => {
   const [sortMode, setSortMode] = useState<"price" | "ratio">("ratio");
   const [counter, setCounter] = useState(0);
   const { data, mutate, isValidating } = useSWR<MagicatsSaleData[]>(
@@ -50,7 +49,6 @@ const Home = ({
     magicatFetcher,
     {
       refreshInterval: 60000,
-      fallbackData: sales,
       onSuccess: () => setCounter(0),
     }
   );
@@ -79,7 +77,13 @@ const Home = ({
         <Typography variant="h4" component="h1" gutterBottom>
           Magicats Tracker
         </Typography>
-        <TwitterButton />
+        <NoSsr
+          fallback={<Skeleton variant="circular" width={24} height={24} />}
+        >
+          <Box width={24} height={24}>
+            <TwitterButton />
+          </Box>
+        </NoSsr>
         <Box
           component={Paper}
           mt={1}
@@ -179,41 +183,46 @@ const Home = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {data &&
-                data
-                  .filter((sale) => !sale.isAuction)
-                  .sort(getSortFunction(sortMode))
-                  .map((sale) => {
-                    const catData = CAT_DATA[sale.tokenId];
-                    return (
-                      <TableRow key={sale.id}>
-                        <TableCell>{sale.tokenId}</TableCell>
-                        <TableCell>
-                          <Image
-                            src={`https://media-nft.paintswap.finance/250_0x2ab5c606a5aa2352f8072b9e2e8a213033e2c4c9_${sale.tokenId}.png`}
-                            alt={`Magicat #${sale.tokenId}`}
-                            width={100}
-                            height={100}
-                          />
-                        </TableCell>
-                        <TableCell>{catData.name}</TableCell>
-                        <TableCell>{catData.rank}</TableCell>
-                        <TableCell>{Math.floor(catData.score)}</TableCell>
-                        <TableCell>{priceHandler(sale.price)} FTM</TableCell>
-                        <TableCell>
-                          {performanceCalculator(catData.score, sale.price)}
-                        </TableCell>
-                        <TableCell>
-                          <Link
-                            target="_blank"
-                            href={`https://paintswap.finance/marketplace/${sale.id}`}
-                          >
-                            link
-                          </Link>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
+              <NoSsr fallback={<TableSkeleton />}>
+                {data ? (
+                  data
+                    .filter((sale) => !sale.isAuction)
+                    .sort(getSortFunction(sortMode))
+                    .map((sale) => {
+                      const catData = CAT_DATA[sale.tokenId];
+                      return (
+                        <TableRow key={sale.id}>
+                          <TableCell>{sale.tokenId}</TableCell>
+                          <TableCell>
+                            <Image
+                              src={`https://media-nft.paintswap.finance/250_0x2ab5c606a5aa2352f8072b9e2e8a213033e2c4c9_${sale.tokenId}.png`}
+                              alt={`Magicat #${sale.tokenId}`}
+                              width={100}
+                              height={100}
+                            />
+                          </TableCell>
+                          <TableCell>{catData.name}</TableCell>
+                          <TableCell>{catData.rank}</TableCell>
+                          <TableCell>{Math.floor(catData.score)}</TableCell>
+                          <TableCell>{priceHandler(sale.price)} FTM</TableCell>
+                          <TableCell>
+                            {performanceCalculator(catData.score, sale.price)}
+                          </TableCell>
+                          <TableCell>
+                            <Link
+                              target="_blank"
+                              href={`https://paintswap.finance/marketplace/${sale.id}`}
+                            >
+                              link
+                            </Link>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                ) : (
+                  <TableSkeleton />
+                )}
+              </NoSsr>
             </TableBody>
           </Table>
         </TableContainer>
@@ -222,15 +231,6 @@ const Home = ({
       </Box>
     </Container>
   );
-};
-
-interface ServerSideProps extends MagicatsAPI {}
-
-export const getServerSideProps: GetServerSideProps<
-  ServerSideProps
-> = async () => {
-  const sales = await magicatFetcher(MAGIC_CATS_URL);
-  return { props: { sales } };
 };
 
 export default Home;
