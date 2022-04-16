@@ -9,8 +9,13 @@ export const getSortFunction = (mode: SortMode) => {
   if (mode === "ratio") return sortByRatio;
 };
 
-const sortByPrice = (a: MagicatsSaleData, b: MagicatsSaleData) =>
-  parseInt(a.price) - parseInt(b.price);
+const sortByPrice = (a: MagicatsSaleData, b: MagicatsSaleData) => {
+  if (a.price === b.price) {
+    return sortByRatio(a, b);
+  } else {
+    return parseInt(a.price) - parseInt(b.price);
+  }
+};
 
 const sortByRatio = (a: MagicatsSaleData, b: MagicatsSaleData) => {
   const dataA = CAT_DATA[a.tokenId];
