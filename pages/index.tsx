@@ -28,8 +28,8 @@ import { performanceCalculator } from "../utils/performanceCalculator";
 import { getSortFunction } from "../utils/sortFunctionByMode";
 import {
   MAGIC_CATS_URL,
-  magicatFetcher,
   MagicatsSaleData,
+  magicatFetcher,
 } from "../utils/magicatsUtil";
 import TableSkeleton from "../components/TableSkeleton";
 
