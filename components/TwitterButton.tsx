@@ -5,12 +5,17 @@ import { Twitter } from "@mui/icons-material";
 export default function BackToTop() {
   return (
     <Link
-      sx={{ color: "#1da1f2" }}
+      sx={{
+        color: "#1da1f2",
+        display: "flex",
+        alignItems: "center",
+        textDecoration: "none",
+      }}
       target="_blank"
       href="https://twitter.com/FTM_To_The_Moon"
       aria-label="twitter link"
     >
-      <Twitter />
+      <Twitter /> @FTM_To_The_Moon
     </Link>
   );
 }

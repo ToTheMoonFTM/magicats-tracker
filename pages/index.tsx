@@ -78,9 +78,15 @@ const Home = () => {
           Magicats Tracker
         </Typography>
         <NoSsr
-          fallback={<Skeleton variant="circular" width={24} height={24} />}
+          fallback={
+            <Box display="flex" flexDirection="row" alignItems="center">
+              <Skeleton variant="circular" width={24} height={24} />
+              <Box mr={1} />
+              <Skeleton width={150} height={24} />
+            </Box>
+          }
         >
-          <Box width={24} height={24}>
+          <Box height={24}>
             <TwitterButton />
           </Box>
         </NoSsr>
