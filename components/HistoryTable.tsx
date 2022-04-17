@@ -30,7 +30,7 @@ export default function HistoryTable({ data, loading }: Props) {
       <Table sx={{ minWidth: 650 }} aria-label="magicats table">
         <TableHead>
           <TableRow>
-            <TableCell>ID</TableCell>
+            <TableCell>Sale #</TableCell>
             <TableCell />
             <TableCell>Name</TableCell>
             <TableCell>Rank</TableCell>
@@ -45,11 +45,11 @@ export default function HistoryTable({ data, loading }: Props) {
             {loading ? (
               <TableSkeleton />
             ) : (
-              data.map((sale) => {
+              data.map((sale, index) => {
                 const catData = CAT_DATA[sale.tokenId];
                 return (
                   <TableRow key={sale.id}>
-                    <TableCell>{sale.tokenId}</TableCell>
+                    <TableCell>{data.length - index}</TableCell>
                     <TableCell>
                       <Image
                         src={`https://media-nft.paintswap.finance/250_0x2ab5c606a5aa2352f8072b9e2e8a213033e2c4c9_${sale.tokenId}.png`}

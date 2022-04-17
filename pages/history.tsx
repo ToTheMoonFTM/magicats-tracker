@@ -26,20 +26,22 @@ const History = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (sales.length <= total && loading) {
+    let shouldFetchMore = false;
+    do {
       historyFetcher(HISTORY_URL({ numToFetch: 50, numToSkip: total })).then(
         (data) => {
           if (data.sales.length > 0) {
             setSales([...sales, ...castHistoryData(data.sales)]);
             setTotal(sales.length);
+            shouldFetchMore = true;
           } else {
-            setTotal(sales.length - 1);
-            setLoading(false);
+            shouldFetchMore = false;
           }
         }
       );
-    }
-  }, [sales, total, loading]);
+    } while (shouldFetchMore);
+    setLoading(false);
+  }, []);
 
   return (
     <MainContainer title="Sales History">
