@@ -1,6 +1,8 @@
 import React from "react";
-import Link from "./Link";
+
 import { Twitter } from "@mui/icons-material";
+
+import Link from "./Link";
 
 export default function BackToTop() {
   return (

@@ -2,7 +2,7 @@ import { CAT_DATA } from "./catData";
 import { performanceCalculator } from "./performanceCalculator";
 import { MagicatsSaleData } from "./magicatsUtil";
 
-type SortMode = "price" | "ratio";
+export type SortMode = "price" | "ratio";
 
 export const getSortFunction = (mode: SortMode) => {
   if (mode === "price") return sortByPrice;

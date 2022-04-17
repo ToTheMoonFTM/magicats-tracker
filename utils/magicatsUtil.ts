@@ -1,4 +1,5 @@
-import { array, boolean, InferType, number, object, string } from "yup";
+import { InferType, array, boolean, number, object, string } from "yup";
+
 import { fetcher } from "./fetcher";
 
 const MagicatsSaleDataSchema = object({

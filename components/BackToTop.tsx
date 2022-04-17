@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Box";
-import { Fab } from "@mui/material";
+
+import { Box, Fab } from "@mui/material";
 import { ArrowUpward } from "@mui/icons-material";
 
 export default function BackToTop() {

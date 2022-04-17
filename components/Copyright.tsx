@@ -1,6 +1,6 @@
-import * as React from "react";
-import Typography from "@mui/material/Typography";
-import MuiLink from "@mui/material/Link";
+import React from "react";
+
+import { Link as MuiLink, Typography } from "@mui/material";
 
 export default function Copyright() {
   return (
