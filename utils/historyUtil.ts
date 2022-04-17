@@ -19,10 +19,15 @@ export interface HistoryAPI {
 interface QueryParams {
   numToFetch: number;
   numToSkip: number;
+  direction?: "desc" | "asc";
 }
 
-export const HISTORY_URL = ({ numToFetch, numToSkip }: QueryParams) =>
-  `https://api.paintswap.finance/v2/sales?numToFetch=${numToFetch}&numToSkip=${numToSkip}&sold=true&sort=recently-sold&collections[0]=0x2ab5c606a5aa2352f8072b9e2e8a213033e2c4c9&version=2&orderBy=endTime&orderDirection=desc&includeNFTs=true`;
+export const HISTORY_URL = ({
+  numToFetch,
+  numToSkip,
+  direction = "desc",
+}: QueryParams) =>
+  `https://api.paintswap.finance/v2/sales?numToFetch=${numToFetch}&numToSkip=${numToSkip}&sold=true&sort=recently-sold&collections[0]=0x2ab5c606a5aa2352f8072b9e2e8a213033e2c4c9&version=2&orderBy=endTime&orderDirection=${direction}&includeNFTs=true`;
 
 export const historyFetcher = (url: string) =>
   fetcher<HistoryAPI>(url).then((data) => data);

@@ -29,17 +29,17 @@ const History = ({
   useEffect(() => {
     let shouldFetchMore = false;
     do {
-      historyFetcher(HISTORY_URL({ numToFetch: 50, numToSkip: total })).then(
-        (data) => {
-          if (data.sales.length > 0) {
-            setSales([...sales, ...castHistoryData(data.sales)]);
-            setTotal(sales.length);
-            shouldFetchMore = true;
-          } else {
-            shouldFetchMore = false;
-          }
+      historyFetcher(
+        HISTORY_URL({ numToFetch: 50, numToSkip: total, direction: "asc" })
+      ).then((data) => {
+        if (data.sales.length > 0) {
+          setSales([...castHistoryData(data.sales), ...sales]);
+          setTotal(sales.length);
+          shouldFetchMore = true;
+        } else {
+          shouldFetchMore = false;
         }
-      );
+      });
     } while (shouldFetchMore);
     setLoading(false);
   }, []);
