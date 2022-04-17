@@ -33,7 +33,7 @@ const History = ({
         HISTORY_URL({ numToFetch: 50, numToSkip: total, direction: "asc" })
       ).then((data) => {
         if (data.sales.length > 0) {
-          setSales([...castHistoryData(data.sales), ...sales]);
+          setSales([...castHistoryData(data.sales).reverse(), ...sales]);
           setTotal(sales.length);
           shouldFetchMore = true;
         } else {
