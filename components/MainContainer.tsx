@@ -31,14 +31,14 @@ export default function MainContainer({
         </Typography>
         <NoSsr
           fallback={
-            <Box display="flex" flexDirection="row" alignItems="center">
+            <Box display="flex" flexDirection="row" alignItems="center" my={1}>
               <Skeleton variant="circular" width={24} height={24} />
               <Box mr={1} />
               <Skeleton width={150} height={24} />
             </Box>
           }
         >
-          <Box height={24}>
+          <Box height={24} my={1}>
             <TwitterButton />
           </Box>
         </NoSsr>
