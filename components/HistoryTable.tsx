@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 
 import {
+  Box,
   NoSsr,
   Paper,
   Table,
@@ -51,12 +52,14 @@ export default function HistoryTable({ data, loading }: Props) {
                   <TableRow key={sale.id}>
                     <TableCell>{data.length - index}</TableCell>
                     <TableCell>
-                      <Image
-                        src={`https://media-nft.paintswap.finance/250_0x2ab5c606a5aa2352f8072b9e2e8a213033e2c4c9_${sale.tokenId}.png`}
-                        alt={`Magicat #${sale.tokenId}`}
-                        width={100}
-                        height={100}
-                      />
+                      <Box sx={{ minWidth: 25, minHeight: 25 }}>
+                        <Image
+                          src={`https://media-nft.paintswap.finance/250_0x2ab5c606a5aa2352f8072b9e2e8a213033e2c4c9_${sale.tokenId}.png`}
+                          alt={`Magicat #${sale.tokenId}`}
+                          width={100}
+                          height={100}
+                        />
+                      </Box>
                     </TableCell>
                     <TableCell>{catData.name}</TableCell>
                     <TableCell>{catData.rank}</TableCell>

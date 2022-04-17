@@ -21,6 +21,7 @@
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "recharts": "latest",
     "swr": "latest",
     "yup": "latest"
   },
