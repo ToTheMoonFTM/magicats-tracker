@@ -49,7 +49,7 @@ export default function MagicatsTable({ sortMode, data }: Props) {
               data
                 .filter((sale) => !sale.isAuction)
                 .sort(getSortFunction(sortMode))
-                .map((sale) => {
+                .map((sale, index) => {
                   const catData = CAT_DATA[sale.tokenId];
                   return (
                     <TableRow key={sale.id}>
@@ -61,6 +61,7 @@ export default function MagicatsTable({ sortMode, data }: Props) {
                             alt={`Magicat #${sale.tokenId}`}
                             width={100}
                             height={100}
+                            unoptimized={index >= 300} // to avoid exceeding vercel's usage limit
                           />
                         </Box>
                       </TableCell>
