@@ -76,15 +76,15 @@ const CustomToolTip = ({ active, payload }: TooltipProps<any, any>) => {
           />
         </Box>
         <Box>
-          <Typography>ID: {tokenId}</Typography>
+          <Typography>ID: #{tokenId}</Typography>
           <Typography>Name: {catData.name}</Typography>
           <Typography>Rank: {catData.rank}</Typography>
-          <Typography>MP: {catData.score}</Typography>
-          <Typography>Price: {price}</Typography>
+          <Typography>MP: {Math.round(catData.score)}</Typography>
+          <Typography>Price: {price} FTM</Typography>
           <Typography>
             MP per FTM: {(catData.score / parseInt(price)).toFixed(3)}
           </Typography>
-          <Typography>Date Sold: {dateFormatter(endTime)}</Typography>
+          <Typography>Sold On: {dateFormatter(endTime)}</Typography>
         </Box>
       </Box>
     </Paper>
