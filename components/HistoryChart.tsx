@@ -94,9 +94,14 @@ const CustomToolTip = ({ active, payload }: TooltipProps<any, any>) => {
 interface Props {
   sales: SaleHistoryData[];
   loading: boolean;
+  totalSalesAmount: number;
 }
 
-export default function HistoryChart({ sales, loading }: Props) {
+export default function HistoryChart({
+  sales,
+  loading,
+  totalSalesAmount,
+}: Props) {
   const transformedSales = useMemo(
     () =>
       sales.map((sale) => ({
@@ -106,11 +111,10 @@ export default function HistoryChart({ sales, loading }: Props) {
     [sales]
   );
 
-  const avgPrice = useMemo(() => {
-    let totalSalePrice = 0;
-    for (const sale of transformedSales) totalSalePrice += sale.price;
-    return Math.round(totalSalePrice / transformedSales.length);
-  }, [transformedSales]);
+  const avgPrice = useMemo(
+    () => Math.round(totalSalesAmount / transformedSales.length),
+    [totalSalesAmount, transformedSales]
+  );
 
   return (
     <Box mb={1} width="100%" height={500}>

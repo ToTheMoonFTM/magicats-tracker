@@ -21,6 +21,7 @@ const BackToTop = dynamic(() => import("../components/BackToTop"), {
 const History = ({
   sales: defaultSales,
   total: defaultTotal,
+  totalSalesAmount,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [sales, setSales] = useState(defaultSales);
   const [total, setTotal] = useState(defaultTotal);
@@ -46,14 +47,20 @@ const History = ({
 
   return (
     <MainContainer title="Sales History">
-      <HistoryChart sales={sales} loading={loading} />
+      <HistoryChart
+        sales={sales}
+        loading={loading}
+        totalSalesAmount={totalSalesAmount}
+      />
       <HistoryTable data={sales} loading={loading} />
       <BackToTop />
     </MainContainer>
   );
 };
 
-interface StaticProps extends HistoryAPI {}
+interface StaticProps extends HistoryAPI {
+  totalSalesAmount: number;
+}
 
 export const getStaticProps: GetStaticProps<StaticProps> = async () => {
   const sales: SaleHistoryData[] = [];
@@ -73,8 +80,13 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
     }
   } while (sales.length < total);
 
+  const totalSalesAmount = sales.reduce(
+    (sum, curr) => sum + Math.round(parseInt(curr.price) / 1e18),
+    0
+  );
+
   return {
-    props: { sales, total },
+    props: { sales, total, totalSalesAmount },
   };
 };
 
