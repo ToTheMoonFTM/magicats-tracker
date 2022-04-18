@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   CartesianGrid,
+  ReferenceLine,
   ResponsiveContainer,
   Scatter,
   ScatterChart,
@@ -15,12 +16,51 @@ import { Box, Skeleton } from "@mui/material";
 
 import { SaleHistoryData } from "../utils/historyUtil";
 
+const dateFormatter = (dateValue: number) =>
+  new Date(dateValue).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+
+const DateTick = ({ x, y, payload }: any) => {
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        x={0}
+        y={0}
+        dy={16}
+        textAnchor="end"
+        fill="#666"
+        transform="rotate(-25)"
+      >
+        {dateFormatter(payload.value)}
+      </text>
+    </g>
+  );
+};
+
 interface Props {
   sales: SaleHistoryData[];
   loading: boolean;
 }
 
 export default function HistoryChart({ sales, loading }: Props) {
+  const transformedSales = useMemo(
+    () =>
+      sales.map((sale) => ({
+        ...sale,
+        price: Math.round(parseInt(sale.price) / 1e18),
+      })),
+    [sales]
+  );
+
+  const avgPrice = useMemo(() => {
+    let totalSalePrice = 0;
+    for (const sale of transformedSales) totalSalePrice += sale.price;
+    return Math.round(totalSalePrice / transformedSales.length);
+  }, [transformedSales]);
+
   return (
     <Box mb={1} width="100%" height={500}>
       {loading ? (
@@ -44,14 +84,8 @@ export default function HistoryChart({ sales, loading }: Props) {
               dataKey="endTime"
               domain={["dataMin", "dataMax"]}
               name="Date"
-              tickFormatter={(endTime) =>
-                new Date(endTime).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })
-              }
-              minTickGap={18}
+              height={60}
+              tick={<DateTick />}
             />
             <YAxis
               scale={scaleSqrt().exponent(0.3).range([0, 50000])}
@@ -82,18 +116,30 @@ export default function HistoryChart({ sales, loading }: Props) {
                 return value;
               }}
             />
-            <Scatter
-              name="A school"
-              data={sales.map((sale) => ({
-                ...sale,
-                price: Math.round(parseInt(sale.price) / 1e18),
-              }))}
-              fill="#8884d8"
+            <Scatter name="A school" data={transformedSales} fill="#8884d8" />
+            <ReferenceLine
+              y={avgPrice}
+              stroke="green"
+              strokeDasharray="3 3"
+              label={{
+                value: `Average Price (${avgPrice} FTM)`,
+                position: "insideTopRight",
+                fill: "green",
+              }}
+            />
+            <ReferenceLine
+              y={100}
+              stroke="red"
+              strokeDasharray="3 3"
+              label={{
+                value: "Mint Price (100 FTM)",
+                position: "insideTopRight",
+                fill: "red",
+              }}
             />
           </ScatterChart>
         </ResponsiveContainer>
       )}
-      ;
     </Box>
   );
 }
