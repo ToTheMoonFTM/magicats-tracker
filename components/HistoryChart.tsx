@@ -168,11 +168,11 @@ export default function HistoryChart({
               }}
             />
             <ReferenceLine
-              y={150}
+              y={100}
               stroke="red"
               strokeDasharray="3 3"
               label={{
-                value: "Mint Price (150 FTM)",
+                value: "Mint Price (100 FTM)",
                 position: "insideTopRight",
                 fill: "red",
               }}
