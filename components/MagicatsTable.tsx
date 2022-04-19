@@ -26,7 +26,7 @@ interface Props {
 
 export default function MagicatsTable({ sortMode, data }: Props) {
   return (
-    <TableContainer component={Paper} elevation={2}>
+    <TableContainer component={Paper} elevation={2} sx={{ overflow: "hidden" }}>
       <Table sx={{ minWidth: 650 }} aria-label="magicats table">
         <TableHead>
           <TableRow>

@@ -21,6 +21,8 @@ export default function CatImage({
       sx={{
         minWidth: typeof width === "number" ? Math.min(25, width) : 25,
         minHeight: typeof height === "number" ? Math.min(25, height) : 25,
+        width,
+        height,
       }}
     >
       {imageLoading && (

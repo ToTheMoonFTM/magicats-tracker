@@ -5,7 +5,7 @@ import { Skeleton, TableCell, TableRow } from "@mui/material";
 export default function TableSkeleton() {
   return (
     <>
-      {Array(5)
+      {Array(10)
         .fill(null)
         .map((_, index) => (
           <TableRow key={index}>
