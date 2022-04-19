@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import {
   CartesianGrid,
   ReferenceLine,
@@ -12,19 +12,13 @@ import {
   ZAxis,
 } from "recharts";
 import { scaleSqrt } from "d3-scale";
-import Image from "next/image";
 
 import { Box, Paper, Skeleton, Typography } from "@mui/material";
 
-import { SaleHistoryData } from "../utils/historyUtil";
-import { CAT_DATA } from "../utils/catData";
+import CatImage from "./CatImage";
 
-const dateFormatter = (dateValue: number) =>
-  new Date(dateValue).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
+import { SaleHistoryData } from "../utils/historyUtil";
+import { CatHandler } from "../utils/CatHandler";
 
 const DateTick = ({ x, y, payload }: any) => {
   return (
@@ -37,18 +31,15 @@ const DateTick = ({ x, y, payload }: any) => {
         fill="#666"
         transform="rotate(-25)"
       >
-        {dateFormatter(payload.value)}
+        {CatHandler.getDate(payload.value)}
       </text>
     </g>
   );
 };
 
 const CustomToolTip = ({ active, payload }: TooltipProps<any, any>) => {
-  const [imageLoading, setImageLoading] = useState(true);
-
   if (!active || !payload || payload.length === 0) return null;
   const { price, endTime, tokenId } = payload[0].payload as SaleHistoryData;
-  const catData = CAT_DATA[tokenId];
   return (
     <Paper key={endTime}>
       <Box
@@ -63,28 +54,18 @@ const CustomToolTip = ({ active, payload }: TooltipProps<any, any>) => {
           mr={{ xs: 0, sm: 1 }}
           mb={{ xs: 1, sm: 0 }}
         >
-          {imageLoading && (
-            <Skeleton variant="rectangular" width={150} height={150} />
-          )}
-          <Image
-            src={`https://media-nft.paintswap.finance/250_0x2ab5c606a5aa2352f8072b9e2e8a213033e2c4c9_${tokenId}.png`}
-            alt={`Magicat #${tokenId}`}
-            width={imageLoading ? 0 : 150}
-            height={imageLoading ? 0 : 150}
-            onLoadingComplete={() => setImageLoading(false)}
-            unoptimized // to avoid exceeding vercel's usage limit
-          />
+          <CatImage tokenId={tokenId} width={150} height={150} />
         </Box>
         <Box>
           <Typography>ID: #{tokenId}</Typography>
-          <Typography>Name: {catData.name}</Typography>
-          <Typography>Rank: {catData.rank}</Typography>
-          <Typography>MP: {Math.round(catData.score)}</Typography>
-          <Typography>Price: {price} FTM</Typography>
+          <Typography>Name: {CatHandler.getName(tokenId)}</Typography>
+          <Typography>Rank: {CatHandler.getRank(tokenId)}</Typography>
+          <Typography>MP: {CatHandler.getMP(tokenId)}</Typography>
+          <Typography>Price: {CatHandler.getPrice(price)}</Typography>
           <Typography>
-            MP per FTM: {(catData.score / parseInt(price)).toFixed(3)}
+            MP per FTM: {CatHandler.getRatio(tokenId, price)}
           </Typography>
-          <Typography>Sold On: {dateFormatter(endTime)}</Typography>
+          <Typography>Sold On: {CatHandler.getDate(endTime)}</Typography>
         </Box>
       </Box>
     </Paper>
@@ -102,18 +83,9 @@ export default function HistoryChart({
   loading,
   totalSalesAmount,
 }: Props) {
-  const transformedSales = useMemo(
-    () =>
-      sales.map((sale) => ({
-        ...sale,
-        price: Math.round(parseInt(sale.price) / 1e18),
-      })),
-    [sales]
-  );
-
   const avgPrice = useMemo(
-    () => Math.round(totalSalesAmount / transformedSales.length),
-    [totalSalesAmount, transformedSales]
+    () => Math.round(totalSalesAmount / sales.length),
+    [totalSalesAmount, sales]
   );
 
   return (
@@ -147,18 +119,23 @@ export default function HistoryChart({
               type="number"
               dataKey="price"
               name="Price"
-              domain={[0, 52000]}
+              domain={[0, 5.2e22]}
               ticks={[
-                0, 100, 400, 1000, 5000, 10000, 15000, 20000, 40000, 50000,
+                0, 1e20, 4e20, 1e21, 5e21, 1e22, 1.5e22, 2e22, 4e22, 5e22,
               ]}
               allowDecimals
               allowDataOverflow
+              tickFormatter={(price: number) =>
+                CatHandler.getSafePriceValue(
+                  price.toLocaleString("fullwide", { useGrouping: false })
+                ).toString()
+              }
             />
             <ZAxis range={[30, 30]} />
             <Tooltip content={<CustomToolTip />} />
-            <Scatter name="A school" data={transformedSales} fill="#8884d8" />
+            <Scatter name="A school" data={sales} fill="#8884d8" />
             <ReferenceLine
-              y={avgPrice}
+              y={avgPrice * 1e18}
               stroke="green"
               strokeDasharray="3 3"
               label={{
@@ -168,7 +145,7 @@ export default function HistoryChart({
               }}
             />
             <ReferenceLine
-              y={100}
+              y={100e18}
               stroke="red"
               strokeDasharray="3 3"
               label={{

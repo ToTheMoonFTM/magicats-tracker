@@ -5,8 +5,8 @@ import { fetcher } from "./fetcher";
 const MagicatsSaleDataSchema = object({
   id: string().defined(),
   tokenId: number().defined(),
-  isAuction: boolean().defined(),
   price: string().defined(),
+  isAuction: boolean().defined(),
 });
 
 export type MagicatsSaleData = InferType<typeof MagicatsSaleDataSchema>;

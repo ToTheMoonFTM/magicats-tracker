@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 import useSWR from "swr";
 
 import Copyright from "../components/Copyright";
-import Credits from "../components/Credits";
 import MainContainer from "../components/MainContainer";
 import SortButtonGroup from "../components/SortButtonGroup";
 import RefreshButton from "../components/RefreshButton";
@@ -43,7 +42,6 @@ const Home = () => {
 
   return (
     <MainContainer title="Magicats Tracker">
-      <Credits />
       <SortButtonGroup sortMode={sortMode} setSortMode={setSortMode} />
       <RefreshButton
         counter={counter}

@@ -1,6 +1,5 @@
-import { CAT_DATA } from "./catData";
-import { performanceCalculator } from "./performanceCalculator";
 import { MagicatsSaleData } from "./magicatsUtil";
+import { CatHandler } from "./CatHandler";
 
 export type SortMode = "price" | "ratio";
 
@@ -18,9 +17,7 @@ const sortByPrice = (a: MagicatsSaleData, b: MagicatsSaleData) => {
 };
 
 const sortByRatio = (a: MagicatsSaleData, b: MagicatsSaleData) => {
-  const dataA = CAT_DATA[a.tokenId];
-  const perfA = parseFloat(performanceCalculator(dataA.score, a.price));
-  const dataB = CAT_DATA[b.tokenId];
-  const perfB = parseFloat(performanceCalculator(dataB.score, b.price));
+  const perfA = parseFloat(CatHandler.getRatio(a.tokenId, a.price));
+  const perfB = parseFloat(CatHandler.getRatio(b.tokenId, b.price));
   return perfB - perfA;
 };

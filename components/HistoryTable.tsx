@@ -1,8 +1,6 @@
 import React from "react";
-import Image from "next/image";
 
 import {
-  Box,
   NoSsr,
   Paper,
   Table,
@@ -13,12 +11,11 @@ import {
   TableRow,
 } from "@mui/material";
 
-import { CAT_DATA } from "../utils/catData";
-import { priceHandler } from "../utils/priceHandler";
-import { performanceCalculator } from "../utils/performanceCalculator";
-import { SaleHistoryData } from "../utils/historyUtil";
-
 import TableSkeleton from "./TableSkeleton";
+import CatImage from "./CatImage";
+
+import { SaleHistoryData } from "../utils/historyUtil";
+import { CatHandler } from "../utils/CatHandler";
 
 interface Props {
   data: SaleHistoryData[];
@@ -47,31 +44,23 @@ export default function HistoryTable({ data, loading }: Props) {
               <TableSkeleton />
             ) : (
               data.map((sale, index) => {
-                const catData = CAT_DATA[sale.tokenId];
                 return (
                   <TableRow key={sale.id}>
                     <TableCell>{data.length - index}</TableCell>
                     <TableCell>
-                      <Box sx={{ minWidth: 25, minHeight: 25 }}>
-                        <Image
-                          src={`https://media-nft.paintswap.finance/250_0x2ab5c606a5aa2352f8072b9e2e8a213033e2c4c9_${sale.tokenId}.png`}
-                          alt={`Magicat #${sale.tokenId}`}
-                          width={100}
-                          height={100}
-                          unoptimized={index >= 300} // to avoid exceeding vercel's usage limit
-                        />
-                      </Box>
+                      <CatImage
+                        tokenId={sale.tokenId}
+                        unoptimized={index > 20} // to avoid exceeding vercel's usage limit
+                      />
                     </TableCell>
-                    <TableCell>{catData.name}</TableCell>
-                    <TableCell>{catData.rank}</TableCell>
-                    <TableCell>{Math.floor(catData.score)}</TableCell>
-                    <TableCell>{priceHandler(sale.price)} FTM</TableCell>
+                    <TableCell>{CatHandler.getName(sale.tokenId)}</TableCell>
+                    <TableCell>{CatHandler.getRank(sale.tokenId)}</TableCell>
+                    <TableCell>{CatHandler.getMP(sale.tokenId)}</TableCell>
+                    <TableCell>{CatHandler.getPrice(sale.price)}</TableCell>
                     <TableCell>
-                      {performanceCalculator(catData.score, sale.price)}
+                      {CatHandler.getRatio(sale.tokenId, sale.price)}
                     </TableCell>
-                    <TableCell>
-                      {new Date(sale.endTime).toLocaleDateString()}
-                    </TableCell>
+                    <TableCell>{CatHandler.getDate(sale.endTime)}</TableCell>
                   </TableRow>
                 );
               })

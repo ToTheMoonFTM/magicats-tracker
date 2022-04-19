@@ -3,16 +3,16 @@ import { GetStaticProps, InferGetStaticPropsType } from "next";
 import dynamic from "next/dynamic";
 
 import MainContainer from "../components/MainContainer";
-import HistoryTable from "../components/HistoryTable";
 import HistoryChart from "../components/HistoryChart";
+import HistoryTable from "../components/HistoryTable";
 
 import {
   HISTORY_URL,
-  HistoryAPI,
   SaleHistoryData,
   castHistoryData,
   historyFetcher,
 } from "../utils/historyUtil";
+import { CatHandler } from "../utils/CatHandler";
 
 const BackToTop = dynamic(() => import("../components/BackToTop"), {
   ssr: false,
@@ -20,24 +20,27 @@ const BackToTop = dynamic(() => import("../components/BackToTop"), {
 
 const History = ({
   sales: defaultSales,
-  total: defaultTotal,
   totalSalesAmount,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [sales, setSales] = useState(defaultSales);
-  const [total, setTotal] = useState(defaultTotal);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let newSales = sales;
     let shouldFetchMore = false;
     do {
       historyFetcher(
-        HISTORY_URL({ numToFetch: 50, numToSkip: total, direction: "asc" })
+        HISTORY_URL({
+          numToFetch: 50,
+          numToSkip: newSales.length,
+          direction: "asc",
+        })
       ).then((data) => {
         if (data.sales.length > 0) {
-          setSales([...castHistoryData(data.sales).reverse(), ...sales]);
-          setTotal(sales.length);
+          newSales = [...castHistoryData(data.sales).reverse(), ...newSales];
           shouldFetchMore = true;
         } else {
+          setSales(newSales);
           shouldFetchMore = false;
         }
       });
@@ -46,7 +49,7 @@ const History = ({
   }, []);
 
   return (
-    <MainContainer title="Sales History">
+    <MainContainer title="Magicats Sales History">
       <HistoryChart
         sales={sales}
         loading={loading}
@@ -58,7 +61,8 @@ const History = ({
   );
 };
 
-interface StaticProps extends HistoryAPI {
+interface StaticProps {
+  sales: SaleHistoryData[];
   totalSalesAmount: number;
 }
 
@@ -73,7 +77,6 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
       })
     );
     if (data.sales.length > 0) {
-      total = Math.max(total, data.total);
       sales.push(...castHistoryData(data.sales));
     } else {
       total = sales.length;
@@ -81,12 +84,12 @@ export const getStaticProps: GetStaticProps<StaticProps> = async () => {
   } while (sales.length < total);
 
   const totalSalesAmount = sales.reduce(
-    (sum, curr) => sum + Math.round(parseInt(curr.price) / 1e18),
+    (sum, curr) => sum + CatHandler.getSafePriceValue(curr.price),
     0
   );
 
   return {
-    props: { sales, total, totalSalesAmount },
+    props: { sales, totalSalesAmount },
   };
 };
 

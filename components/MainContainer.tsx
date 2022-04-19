@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from "react";
 import dynamic from "next/dynamic";
 
 import { Box, Container, NoSsr, Skeleton, Typography } from "@mui/material";
+import Credits from "./Credits";
 
 const TwitterButton = dynamic(() => import("../components/TwitterButton"), {
   ssr: false,
@@ -42,6 +43,7 @@ export default function MainContainer({
             <TwitterButton />
           </Box>
         </NoSsr>
+        <Credits />
         {children}
       </Box>
     </Container>
