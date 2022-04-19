@@ -13,7 +13,14 @@ import {
 } from "recharts";
 import { scaleSqrt } from "d3-scale";
 
-import { Box, Paper, Skeleton, Typography } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Skeleton,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 
 import CatImage from "./CatImage";
 
@@ -24,9 +31,9 @@ const DateTick = ({ x, y, payload }: any) => {
   return (
     <g transform={`translate(${x},${y})`}>
       <text
-        x={0}
+        x={22}
         y={0}
-        dy={16}
+        dy={20}
         textAnchor="end"
         fill="#666"
         transform="rotate(-25)"
@@ -83,6 +90,9 @@ export default function HistoryChart({
   loading,
   totalSalesAmount,
 }: Props) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
+
   const avgPrice = useMemo(
     () => Math.round(totalSalesAmount / sales.length),
     [totalSalesAmount, sales]
@@ -99,8 +109,8 @@ export default function HistoryChart({
             height={500}
             margin={{
               top: 20,
-              right: 20,
-              bottom: 20,
+              right: isMobile ? 0 : 20,
+              bottom: isMobile ? 0 : 20,
               left: 20,
             }}
           >
@@ -123,17 +133,30 @@ export default function HistoryChart({
               ticks={[
                 0, 1e20, 4e20, 1e21, 5e21, 1e22, 1.5e22, 2e22, 4e22, 5e22,
               ]}
-              allowDecimals
-              allowDataOverflow
               tickFormatter={(price: number) =>
                 CatHandler.getSafePriceValue(
                   price.toLocaleString("fullwide", { useGrouping: false })
                 ).toString()
               }
+              mirror={isMobile}
             />
             <ZAxis range={[30, 30]} />
             <Tooltip content={<CustomToolTip />} />
-            <Scatter name="A school" data={sales} fill="#8884d8" />
+            <Scatter
+              name="normal cats"
+              data={sales.filter(
+                (sale) => CatHandler.getRank(sale.tokenId) > 1
+              )}
+              fill="#8884d8"
+            />
+            <Scatter
+              name="legendary cats"
+              data={sales.filter(
+                (sale) => CatHandler.getRank(sale.tokenId) === 1
+              )}
+              fill="orange"
+              shape="star"
+            />
             <ReferenceLine
               y={avgPrice * 1e18}
               stroke="green"
