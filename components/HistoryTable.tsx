@@ -45,7 +45,15 @@ export default function HistoryTable({ data, loading }: Props) {
             ) : (
               data.map((sale, index) => {
                 return (
-                  <TableRow key={sale.id}>
+                  <TableRow
+                    key={sale.id}
+                    sx={{
+                      backgroundColor:
+                        CatHandler.getRank(sale.tokenId) === 1
+                          ? "gold"
+                          : undefined,
+                    }}
+                  >
                     <TableCell>{data.length - index}</TableCell>
                     <TableCell>
                       <CatImage
