@@ -1,4 +1,5 @@
 import { CAT_DATA } from "./catData";
+import { green } from "@mui/material/colors";
 
 const getName = (tokenId: number) => CAT_DATA[tokenId].name;
 
@@ -29,6 +30,23 @@ const getDate = (timestamp: number) =>
 const getImgURL = (tokenId: number) =>
   `https://media-nft.paintswap.finance/250_0x2ab5c606a5aa2352f8072b9e2e8a213033e2c4c9_${tokenId}.png`;
 
+const getBgColor = (tokenId: number, price: string) => {
+  if (getRank(tokenId) === 1) {
+    return "gold";
+  }
+  const ratio = parseFloat(getRatio(tokenId, price));
+  if (ratio >= 6) {
+    return green[500];
+  }
+  if (ratio >= 5) {
+    return green[300];
+  }
+  if (ratio >= 4) {
+    return green[100];
+  }
+  return undefined;
+};
+
 export const CatHandler = Object.freeze({
   getName,
   getRank,
@@ -38,4 +56,5 @@ export const CatHandler = Object.freeze({
   getRatio,
   getDate,
   getImgURL,
+  getBgColor,
 });

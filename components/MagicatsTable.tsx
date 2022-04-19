@@ -48,7 +48,15 @@ export default function MagicatsTable({ sortMode, data }: Props) {
                 .sort(getSortFunction(sortMode))
                 .map((sale, index) => {
                   return (
-                    <TableRow key={sale.id}>
+                    <TableRow
+                      key={sale.id}
+                      sx={{
+                        backgroundColor: CatHandler.getBgColor(
+                          sale.tokenId,
+                          sale.price
+                        ),
+                      }}
+                    >
                       <TableCell>{sale.tokenId}</TableCell>
                       <TableCell>
                         <CatImage
