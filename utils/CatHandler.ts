@@ -7,7 +7,8 @@ const getRank = (tokenId: number) => CAT_DATA[tokenId].rank;
 const getMP = (tokenId: number) => Math.floor(CAT_DATA[tokenId].score);
 
 const getSafePriceValue = (price: string): number =>
-  parseInt(price.substring(0, price.length - 12)) / 1e6;
+  parseInt(price.length >= 12 ? price.substring(0, price.length - 12) : price) /
+  1e6;
 
 const getPrice = (price: string) =>
   new Intl.NumberFormat().format(Math.round(parseInt(price) / 1e16) / 1e2) +
