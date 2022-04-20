@@ -150,6 +150,7 @@ export default function HistoryChart({
               fill="#8884d8"
             />
             <Scatter
+              isAnimationActive={false}
               name="legendary cats"
               data={sales.filter(
                 (sale) => CatHandler.getRank(sale.tokenId) === 1
