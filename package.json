@@ -18,6 +18,7 @@
     "@mui/lab": "latest",
     "@mui/material": "latest",
     "axios": "latest",
+    "dayjs": "latest",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",

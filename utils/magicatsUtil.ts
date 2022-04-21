@@ -7,6 +7,7 @@ const MagicatsSaleDataSchema = object({
   tokenId: number().defined(),
   price: string().defined(),
   isAuction: boolean().defined(),
+  endTime: number().defined(),
 });
 
 export type MagicatsSaleData = InferType<typeof MagicatsSaleDataSchema>;
@@ -22,6 +23,7 @@ export const magicatFetcher = (url: string) =>
   fetcher<MagicatsAPI>(url).then(({ sales }) => castMagicatsSalesData(sales));
 
 export const castMagicatsSalesData = (sales: MagicatsSaleData[]) =>
-  array(MagicatsSaleDataSchema).cast(sales, {
-    stripUnknown: true,
-  }) as MagicatsSaleData[];
+  array(MagicatsSaleDataSchema).cast(
+    sales.map((sale) => Object.assign(sale, { endTime: sale.endTime * 1000 })),
+    { stripUnknown: true }
+  ) as MagicatsSaleData[];

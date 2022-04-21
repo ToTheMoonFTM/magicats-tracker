@@ -13,12 +13,14 @@ import {
   MagicatsSaleData,
   magicatFetcher,
 } from "../utils/magicatsUtil";
+import { Box, FormControlLabel, Switch } from "@mui/material";
 
 const BackToTop = dynamic(() => import("../components/BackToTop"), {
   ssr: false,
 });
 
 const Home = () => {
+  const [showAuction, setShowAuction] = useState(false);
   const [sortMode, setSortMode] = useState<"price" | "ratio">("ratio");
   const [counter, setCounter] = useState(0);
   const { data, mutate, isValidating } = useSWR<MagicatsSaleData[]>(
@@ -43,12 +45,24 @@ const Home = () => {
   return (
     <MainContainer title="Magicats Tracker">
       <SortButtonGroup sortMode={sortMode} setSortMode={setSortMode} />
-      <RefreshButton
-        counter={counter}
-        isValidating={isValidating}
-        mutate={mutate}
+      <Box width="100%" display="flex" justifyContent="space-between">
+        <FormControlLabel
+          sx={{ minWidth: 200 }}
+          control={<Switch checked={showAuction} />}
+          label="Show Auctions"
+          onChange={() => setShowAuction(!showAuction)}
+        />
+        <RefreshButton
+          counter={counter}
+          isValidating={isValidating}
+          mutate={mutate}
+        />
+      </Box>
+      <MagicatsTable
+        data={data}
+        sortMode={sortMode}
+        showAuction={showAuction}
       />
-      <MagicatsTable data={data} sortMode={sortMode} />
       <BackToTop />
       <Copyright />
     </MainContainer>
