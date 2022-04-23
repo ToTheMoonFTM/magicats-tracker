@@ -23,10 +23,12 @@ const History = ({
   totalSalesAmount,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [sales, setSales] = useState(defaultSales);
+  const [totalSales, setTotalSales] = useState(totalSalesAmount);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let newSales = sales;
+    let newTotalSales = totalSalesAmount;
     let shouldFetchMore = false;
     do {
       historyFetcher(
@@ -37,10 +39,15 @@ const History = ({
         })
       ).then((data) => {
         if (data.sales.length > 0) {
+          newTotalSales = data.sales.reduce(
+            (sum, curr) => sum + CatHandler.getSafePriceValue(curr.price),
+            newTotalSales
+          );
           newSales = [...castHistoryData(data.sales).reverse(), ...newSales];
           shouldFetchMore = true;
         } else {
           setSales(newSales);
+          setTotalSales(newTotalSales);
           shouldFetchMore = false;
         }
       });
@@ -53,7 +60,7 @@ const History = ({
       <HistoryChart
         sales={sales}
         loading={loading}
-        totalSalesAmount={totalSalesAmount}
+        totalSalesAmount={totalSales}
       />
       <HistoryTable data={sales} loading={loading} />
       <BackToTop />
