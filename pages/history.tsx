@@ -29,8 +29,8 @@ const History = ({
   useEffect(() => {
     let newSales = sales;
     let newTotalSales = totalSalesAmount;
-    let shouldFetchMore = false;
-    do {
+
+    const fetchData = () =>
       historyFetcher(
         HISTORY_URL({
           numToFetch: 50,
@@ -44,15 +44,15 @@ const History = ({
             newTotalSales
           );
           newSales = [...castHistoryData(data.sales).reverse(), ...newSales];
-          shouldFetchMore = true;
+          fetchData();
         } else {
           setSales(newSales);
           setTotalSales(newTotalSales);
-          shouldFetchMore = false;
+          setLoading(false);
         }
       });
-    } while (shouldFetchMore);
-    setLoading(false);
+
+    fetchData();
   }, []);
 
   return (
