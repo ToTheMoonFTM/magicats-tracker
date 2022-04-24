@@ -13,13 +13,7 @@ export default function TableSkeleton() {
               <Skeleton sx={{ width: { xs: 30, md: 40 } }} />
             </TableCell>
             <TableCell>
-              <Skeleton
-                variant="rectangular"
-                sx={{
-                  width: { xs: 22, sm: 40, md: 82, lg: 100 },
-                  height: { xs: 22, sm: 40, md: 82, lg: 100 },
-                }}
-              />
+              <Skeleton variant="rectangular" width={100} height={100} />
             </TableCell>
             <TableCell>
               <Skeleton sx={{ width: { xs: 140, md: 250 } }} />
