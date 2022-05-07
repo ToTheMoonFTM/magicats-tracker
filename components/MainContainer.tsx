@@ -118,7 +118,7 @@ export default function MainContainer({
                 display="flex"
                 flexDirection="row"
                 alignItems="center"
-                my={1}
+                my={2}
               >
                 <Skeleton variant="circular" width={24} height={24} />
                 <Box mr={1} />
