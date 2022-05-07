@@ -21,7 +21,7 @@ export default function Credits() {
           <Typography>
             <Link
               target="_blank"
-              href="https://spookyswap.finance/magicats"
+              href="https://spooky.fi/#/magicats"
               underline="hover"
             >
               SpookySwap

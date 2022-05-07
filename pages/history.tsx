@@ -51,7 +51,7 @@ const History = ({
   }, []);
 
   return (
-    <MainContainer title="Magicats Sales History">
+    <MainContainer title="Sales History">
       <HistoryChart
         sales={sales}
         loading={loading}
