@@ -19,8 +19,6 @@ const columns: GridColDef[] = [
     headerName: "Sale #",
     minWidth: 75,
     width: 100,
-    sortable: false,
-    disableColumnMenu: true,
   },
   {
     field: "col2",
@@ -45,30 +43,39 @@ const columns: GridColDef[] = [
     headerName: "Rank",
     minWidth: 75,
     width: 100,
+    type: "number",
   },
   {
     field: "col5",
     headerName: "MP",
     minWidth: 100,
     width: 120,
+    type: "number",
   },
   {
     field: "col6",
     headerName: "Price",
     minWidth: 120,
     width: 150,
+    type: "string",
+    sortComparator: (v1, v2) =>
+      parseFloat(v1.replace(" FTM", "").replaceAll(",", "")) -
+      parseFloat(v2.replace(" FTM", "").replaceAll(",", "")),
   },
   {
     field: "col7",
     headerName: "MP per FTM",
     minWidth: 100,
     width: 120,
+    type: "number",
   },
   {
     field: "col8",
     headerName: "Date Sold",
     minWidth: 100,
     width: 120,
+    sortable: false,
+    disableColumnMenu: true,
   },
 ];
 
