@@ -71,10 +71,7 @@ export default function MagicatsTable({ showAuction, sortMode, data }: Props) {
                     >
                       <TableCell>{sale.tokenId}</TableCell>
                       <TableCell>
-                        <CatImage
-                          tokenId={sale.tokenId}
-                          unoptimized={index > 20} // to avoid exceeding vercel's usage limit
-                        />
+                        <CatImage tokenId={sale.tokenId} />
                       </TableCell>
                       <TableCell>{CatHandler.getName(sale.tokenId)}</TableCell>
                       <TableCell>{CatHandler.getRank(sale.tokenId)}</TableCell>

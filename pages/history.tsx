@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
-import dynamic from "next/dynamic";
 
 import MainContainer from "../components/MainContainer";
 import HistoryChart from "../components/HistoryChart";
@@ -13,10 +12,6 @@ import {
   historyFetcher,
 } from "../utils/historyUtil";
 import { CatHandler } from "../utils/CatHandler";
-
-const BackToTop = dynamic(() => import("../components/BackToTop"), {
-  ssr: false,
-});
 
 const History = ({
   sales: defaultSales,
@@ -62,8 +57,7 @@ const History = ({
         loading={loading}
         totalSalesAmount={totalSales}
       />
-      <HistoryTable data={sales} loading={loading} />
-      <BackToTop />
+      <HistoryTable data={loading ? [] : sales} loading={loading} />
     </MainContainer>
   );
 };

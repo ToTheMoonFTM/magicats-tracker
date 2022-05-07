@@ -1,85 +1,104 @@
-import React from "react";
+import React, { useMemo } from "react";
 
-import {
-  NoSsr,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Box } from "@mui/material";
 
-import TableSkeleton from "./TableSkeleton";
 import CatImage from "./CatImage";
 
 import { SaleHistoryData } from "../utils/historyUtil";
 import { CatHandler } from "../utils/CatHandler";
+import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 
 interface Props {
   data: SaleHistoryData[];
   loading: boolean;
 }
 
+const columns: GridColDef[] = [
+  {
+    field: "col1",
+    headerName: "Sale #",
+    minWidth: 75,
+    width: 100,
+    sortable: false,
+    disableColumnMenu: true,
+  },
+  {
+    field: "col2",
+    headerName: "",
+    minWidth: 120,
+    width: 120,
+    align: "center",
+    renderCell: (params) => <CatImage tokenId={params.value} />,
+    sortable: false,
+    disableColumnMenu: true,
+  },
+  {
+    field: "col3",
+    headerName: "Name",
+    minWidth: 300,
+    width: 300,
+    sortable: false,
+    disableColumnMenu: true,
+  },
+  {
+    field: "col4",
+    headerName: "Rank",
+    minWidth: 75,
+    width: 100,
+  },
+  {
+    field: "col5",
+    headerName: "MP",
+    minWidth: 100,
+    width: 120,
+  },
+  {
+    field: "col6",
+    headerName: "Price",
+    minWidth: 120,
+    width: 150,
+  },
+  {
+    field: "col7",
+    headerName: "MP per FTM",
+    minWidth: 100,
+    width: 120,
+  },
+  {
+    field: "col8",
+    headerName: "Date Sold",
+    minWidth: 100,
+    width: 120,
+  },
+];
+
 export default function HistoryTable({ data, loading }: Props) {
+  const rows: GridRowsProp = useMemo(
+    () =>
+      data.map((sale, index) => ({
+        id: data.length - index,
+        col1: data.length - index,
+        col2: sale.tokenId,
+        col3: CatHandler.getName(sale.tokenId),
+        col4: CatHandler.getRank(sale.tokenId),
+        col5: CatHandler.getMP(sale.tokenId),
+        col6: CatHandler.getPrice(sale.price),
+        col7: CatHandler.getRatio(sale.tokenId, sale.price),
+        col8: CatHandler.getDate(sale.endTime),
+      })),
+    [data]
+  );
+
   return (
-    <TableContainer
-      component={Paper}
-      elevation={2}
-      sx={{ overflowY: "hidden" }}
-    >
-      <Table sx={{ minWidth: 650 }} aria-label="magicats table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Sale #</TableCell>
-            <TableCell />
-            <TableCell>Name</TableCell>
-            <TableCell>Rank</TableCell>
-            <TableCell>MP</TableCell>
-            <TableCell>Price</TableCell>
-            <TableCell>MP per FTM</TableCell>
-            <TableCell>Date Sold</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <NoSsr fallback={<TableSkeleton />}>
-            {loading ? (
-              <TableSkeleton />
-            ) : (
-              data.map((sale, index) => {
-                return (
-                  <TableRow
-                    key={sale.id}
-                    sx={{
-                      backgroundColor:
-                        CatHandler.getRank(sale.tokenId) === 1
-                          ? "gold"
-                          : undefined,
-                    }}
-                  >
-                    <TableCell>{data.length - index}</TableCell>
-                    <TableCell>
-                      <CatImage
-                        tokenId={sale.tokenId}
-                        unoptimized={index > 20} // to avoid exceeding vercel's usage limit
-                      />
-                    </TableCell>
-                    <TableCell>{CatHandler.getName(sale.tokenId)}</TableCell>
-                    <TableCell>{CatHandler.getRank(sale.tokenId)}</TableCell>
-                    <TableCell>{CatHandler.getMP(sale.tokenId)}</TableCell>
-                    <TableCell>{CatHandler.getPrice(sale.price)}</TableCell>
-                    <TableCell>
-                      {CatHandler.getRatio(sale.tokenId, sale.price)}
-                    </TableCell>
-                    <TableCell>{CatHandler.getDate(sale.endTime)}</TableCell>
-                  </TableRow>
-                );
-              })
-            )}
-          </NoSsr>
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box sx={{ height: 1200, width: "100%" }}>
+      <DataGrid
+        columns={columns}
+        rows={rows}
+        rowHeight={120}
+        disableColumnSelector
+        disableSelectionOnClick
+        loading={loading}
+      />
+    </Box>
   );
 }

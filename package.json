@@ -17,6 +17,7 @@
     "@mui/icons-material": "latest",
     "@mui/lab": "latest",
     "@mui/material": "latest",
+    "@mui/x-data-grid": "latest",
     "axios": "latest",
     "dayjs": "latest",
     "next": "latest",

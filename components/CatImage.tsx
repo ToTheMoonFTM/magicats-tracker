@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import Image, { ImageProps } from "next/image";
+import React, { ImgHTMLAttributes, useState } from "react";
 
 import { Box, Skeleton } from "@mui/material";
 import { CatHandler } from "../utils/CatHandler";
 
-interface Props extends Omit<ImageProps, "src" | "onLoadingComplete"> {
+interface Props extends ImgHTMLAttributes<any> {
   tokenId: number;
 }
 
@@ -12,7 +11,6 @@ export default function CatImage({
   tokenId,
   width = 100,
   height = 100,
-  unoptimized = true,
 }: Props) {
   const [imageLoading, setImageLoading] = useState(true);
 
@@ -28,13 +26,12 @@ export default function CatImage({
       {imageLoading && (
         <Skeleton variant="rectangular" width={width} height={height} />
       )}
-      <Image
+      <img
         src={CatHandler.getImgURL(tokenId)}
         alt={`Magicat #${tokenId}`}
         width={imageLoading ? 0 : width}
         height={imageLoading ? 0 : height}
-        onLoadingComplete={() => setImageLoading(false)}
-        unoptimized={unoptimized}
+        onLoad={() => setImageLoading(false)}
       />
     </Box>
   );
