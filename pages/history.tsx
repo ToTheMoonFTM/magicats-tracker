@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 
 import MainContainer from "../components/MainContainer";
@@ -12,43 +12,16 @@ import {
   historyFetcher,
 } from "../utils/historyUtil";
 import { CatHandler } from "../utils/CatHandler";
+import { useSales } from "../utils/useSales";
 
 const History = ({
   sales: defaultSales,
   totalSalesAmount,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const [sales, setSales] = useState(defaultSales);
-  const [totalSales, setTotalSales] = useState(totalSalesAmount);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let newSales = sales;
-    let newTotalSales = totalSalesAmount;
-
-    const fetchData = () =>
-      historyFetcher(
-        HISTORY_URL({
-          numToFetch: 50,
-          numToSkip: newSales.length,
-          direction: "asc",
-        })
-      ).then((data) => {
-        if (data.sales.length > 0) {
-          newTotalSales = data.sales.reduce(
-            (sum, curr) => sum + CatHandler.getSafePriceValue(curr.price),
-            newTotalSales
-          );
-          newSales = [...castHistoryData(data.sales).reverse(), ...newSales];
-          fetchData();
-        } else {
-          setSales(newSales);
-          setTotalSales(newTotalSales);
-          setLoading(false);
-        }
-      });
-
-    fetchData();
-  }, []);
+  const { sales, totalSales, loading } = useSales(
+    defaultSales,
+    totalSalesAmount
+  );
 
   return (
     <MainContainer title="Sales History">

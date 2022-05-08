@@ -13,7 +13,7 @@ import {
   useTheme,
 } from "@mui/material";
 import Link from "./Link";
-import { Celebration, History, Home } from "@mui/icons-material";
+import { Celebration, History, Home, QueryStats } from "@mui/icons-material";
 
 const TwitterButton = dynamic(() => import("../components/TwitterButton"), {
   ssr: false,
@@ -28,7 +28,7 @@ export default function MainContainer({
   children,
 }: PropsWithChildren<Props>) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
     <>
@@ -69,9 +69,24 @@ export default function MainContainer({
                   textDecoration: "none",
                 }}
               >
-                {isMobile ? <Home /> : "HOME"}
+                <Home />
+                {!isSmallScreen && <Box ml={0.5}>HOME</Box>}
               </Link>
-              <Box m={isMobile ? 0.5 : 2} />
+              <Box m={isSmallScreen ? 0.5 : 2} />
+              <Link
+                href="/statistics"
+                sx={{
+                  display: "flex",
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
+              >
+                <QueryStats />
+                {!isSmallScreen && <Box ml={0.5}>STATISTICS</Box>}
+              </Link>
+              <Box m={isSmallScreen ? 0.5 : 2} />
               <Link
                 href="/history"
                 sx={{
@@ -82,9 +97,10 @@ export default function MainContainer({
                   textDecoration: "none",
                 }}
               >
-                {isMobile ? <History /> : "HISTORY"}
+                <History />
+                {!isSmallScreen && <Box ml={0.5}>HISTORY</Box>}
               </Link>
-              <Box m={isMobile ? 0.5 : 2} />
+              <Box m={isSmallScreen ? 0.5 : 2} />
               <Link
                 href="/credits"
                 sx={{
@@ -95,7 +111,8 @@ export default function MainContainer({
                   textDecoration: "none",
                 }}
               >
-                {isMobile ? <Celebration /> : "CREDITS"}
+                <Celebration />
+                {!isSmallScreen && <Box ml={0.5}>CREDITS</Box>}
               </Link>
             </Box>
           </Box>

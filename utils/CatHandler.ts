@@ -11,14 +11,15 @@ const getSafePriceValue = (price: string): number =>
   parseInt(price.length >= 12 ? price.substring(0, price.length - 12) : price) /
   1e6;
 
+const getSafeRatioValue = (tokenId: number, price: string): number =>
+  Math.round((CAT_DATA[tokenId].score * 1e3) / getSafePriceValue(price)) / 1e3;
+
 const getPrice = (price: string) =>
   new Intl.NumberFormat().format(Math.round(parseInt(price) / 1e16) / 1e2) +
   " FTM";
 
 const getRatio = (tokenId: number, price: string): string =>
-  (
-    Math.round((CAT_DATA[tokenId].score * 1e3) / getSafePriceValue(price)) / 1e3
-  ).toFixed(3);
+  getSafeRatioValue(tokenId, price).toFixed(3);
 
 const getDate = (timestamp: number) =>
   new Date(timestamp).toLocaleDateString("en-US", {
@@ -52,6 +53,7 @@ export const CatHandler = Object.freeze({
   getRank,
   getMP,
   getSafePriceValue,
+  getSafeRatioValue,
   getPrice,
   getRatio,
   getDate,
