@@ -4,7 +4,7 @@ import { Twitter } from "@mui/icons-material";
 
 import Link from "./Link";
 
-export default function BackToTop() {
+export default function TwitterButton() {
   return (
     <Link
       sx={{
@@ -17,7 +17,7 @@ export default function BackToTop() {
       href="https://twitter.com/FTM_To_The_Moon"
       aria-label="twitter link"
     >
-      <Twitter /> @FTM_To_The_Moon
+      <Twitter fontSize="large" />
     </Link>
   );
 }

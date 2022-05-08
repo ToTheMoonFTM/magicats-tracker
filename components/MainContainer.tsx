@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import Link from "./Link";
 import { Celebration, History, Home, QueryStats } from "@mui/icons-material";
+import GithubButton from "./GithubButton";
 
 const TwitterButton = dynamic(() => import("../components/TwitterButton"), {
   ssr: false,
@@ -131,20 +132,17 @@ export default function MainContainer({
         >
           <NoSsr
             fallback={
-              <Box
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                my={2}
-              >
-                <Skeleton variant="circular" width={24} height={24} />
-                <Box mr={1} />
-                <Skeleton width={150} height={24} />
+              <Box height={35} my={2} display="flex">
+                <Skeleton variant="circular" width={35} height={35} />
+                <Box mx={1} />
+                <Skeleton variant="circular" width={35} height={35} />
               </Box>
             }
           >
-            <Box height={24} my={2}>
+            <Box height={35} my={2} display="flex">
               <TwitterButton />
+              <Box mx={1} />
+              <GithubButton />
             </Box>
           </NoSsr>
           {children}
