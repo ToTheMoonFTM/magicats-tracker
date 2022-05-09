@@ -13,7 +13,13 @@ import {
   useTheme,
 } from "@mui/material";
 import Link from "./Link";
-import { Celebration, History, Home, QueryStats } from "@mui/icons-material";
+import {
+  Celebration,
+  Handyman,
+  History,
+  Home,
+  QueryStats,
+} from "@mui/icons-material";
 import GithubButton from "./GithubButton";
 
 const TwitterButton = dynamic(() => import("../components/TwitterButton"), {
@@ -73,7 +79,7 @@ export default function MainContainer({
                 <Home />
                 {!isSmallScreen && <Box ml={0.5}>HOME</Box>}
               </Link>
-              <Box m={isSmallScreen ? 0.5 : 2} />
+              <Box m={isSmallScreen ? 0.5 : 1.5} />
               <Link
                 href="/statistics"
                 sx={{
@@ -87,7 +93,21 @@ export default function MainContainer({
                 <QueryStats />
                 {!isSmallScreen && <Box ml={0.5}>STATISTICS</Box>}
               </Link>
-              <Box m={isSmallScreen ? 0.5 : 2} />
+              <Box m={isSmallScreen ? 0.5 : 1.5} />
+              <Link
+                href="/helper"
+                sx={{
+                  display: "flex",
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
+              >
+                <Handyman />
+                {!isSmallScreen && <Box ml={0.5}>Helper</Box>}
+              </Link>
+              <Box m={isSmallScreen ? 0.5 : 1.5} />
               <Link
                 href="/history"
                 sx={{
@@ -101,7 +121,7 @@ export default function MainContainer({
                 <History />
                 {!isSmallScreen && <Box ml={0.5}>HISTORY</Box>}
               </Link>
-              <Box m={isSmallScreen ? 0.5 : 2} />
+              <Box m={isSmallScreen ? 0.5 : 1.5} />
               <Link
                 href="/credits"
                 sx={{
