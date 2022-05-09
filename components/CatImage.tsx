@@ -1,4 +1,4 @@
-import React, { ImgHTMLAttributes, useState } from "react";
+import React, { ImgHTMLAttributes, useEffect, useState } from "react";
 
 import { Box, Skeleton } from "@mui/material";
 import { CatHandler } from "../utils/CatHandler";
@@ -13,6 +13,10 @@ export default function CatImage({
   height = 100,
 }: Props) {
   const [imageLoading, setImageLoading] = useState(true);
+
+  useEffect(() => {
+    setImageLoading(true);
+  }, [tokenId]);
 
   return (
     <Box
