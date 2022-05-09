@@ -48,18 +48,18 @@ export default function MainContainer({
           >
             <Link href="/">
               <Box display="flex" alignItems="center">
-                <Box mr={1}>
-                  <Avatar alt="mascot cat" src="/static/mascot-cat.png" />
-                </Box>
+                <Avatar alt="mascot cat" src="/static/mascot-cat.png" />
                 <Typography
                   variant="h6"
                   noWrap
                   sx={{
+                    ml: { xs: 0, sm: 1 },
                     fontFamily: "monospace",
                     fontWeight: 700,
                     color: "white",
                     textDecoration: "none",
                   }}
+                  fontSize={{ xs: 14, sm: "medium" }}
                 >
                   {title}
                 </Typography>

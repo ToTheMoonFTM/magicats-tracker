@@ -123,7 +123,7 @@ const Helper = () => {
   }, [selected, price, ratio]);
 
   return (
-    <MainContainer title="Magicats Sales Helper">
+    <MainContainer title="Sales Helper">
       <Box my={1}>
         <Stepper activeStep={activeStep} alternativeLabel>
           <Step>
