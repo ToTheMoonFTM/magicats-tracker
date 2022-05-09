@@ -38,15 +38,23 @@ const Helper = () => {
   const [selected, setSelected] = useState<AutocompleteOption | null>(null);
   const [price, setPrice] = useState("");
   const [ratio, setRatio] = useState("");
+  const [lastInputted, setLastInputted] = useState<"price" | "ratio" | null>(
+    null
+  );
 
   useEffect(() => {
-    if (selected && price) {
-      setRatio(
-        (
-          Math.round((CAT_DATA[selected.id].score * 1e3) / parseFloat(price)) /
-          1e3
-        ).toFixed(3)
-      );
+    if (selected && lastInputted) {
+      if (lastInputted === "price") {
+        setRatio(
+          (
+            Math.round(
+              (CAT_DATA[selected.id].score * 1e3) / parseFloat(price)
+            ) / 1e3
+          ).toFixed(3)
+        );
+      } else {
+        setPrice((CAT_DATA[selected.id].score / parseFloat(ratio)).toFixed(1));
+      }
     } else {
       setPrice("");
       setRatio("");
@@ -62,6 +70,7 @@ const Helper = () => {
   const onPriceChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       if (selected) {
+        setLastInputted("price");
         const value = e.target.value;
         if (!value) {
           setPrice("");
@@ -83,6 +92,7 @@ const Helper = () => {
 
   const onRatioChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
+      setLastInputted("ratio");
       if (selected) {
         const value = e.target.value;
         if (!value) {
