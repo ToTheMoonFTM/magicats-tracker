@@ -44,7 +44,7 @@ const Helper = () => {
 
   useEffect(() => {
     if (selected && lastInputted) {
-      if (lastInputted === "price") {
+      if (lastInputted === "price" && price) {
         setRatio(
           (
             Math.round(
@@ -52,8 +52,11 @@ const Helper = () => {
             ) / 1e3
           ).toFixed(3)
         );
-      } else {
+      } else if (lastInputted === "ratio" && ratio) {
         setPrice((CAT_DATA[selected.id].score / parseFloat(ratio)).toFixed(1));
+      } else {
+        setPrice("");
+        setRatio("");
       }
     } else {
       setPrice("");
