@@ -1,4 +1,10 @@
-import React, { ChangeEvent, useCallback, useMemo, useState } from "react";
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 import Copyright from "../components/Copyright";
 import MainContainer from "../components/MainContainer";
@@ -32,6 +38,20 @@ const Helper = () => {
   const [selected, setSelected] = useState<AutocompleteOption | null>(null);
   const [price, setPrice] = useState("");
   const [ratio, setRatio] = useState("");
+
+  useEffect(() => {
+    if (selected && price) {
+      setRatio(
+        (
+          Math.round((CAT_DATA[selected.id].score * 1e3) / parseFloat(price)) /
+          1e3
+        ).toFixed(3)
+      );
+    } else {
+      setPrice("");
+      setRatio("");
+    }
+  }, [selected]);
 
   const { name, title } = useMemo(() => {
     if (!selected) return { name: "", title: "" };
