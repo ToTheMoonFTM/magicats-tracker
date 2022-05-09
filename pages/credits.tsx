@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Copyright from "../components/Copyright";
 import MainContainer from "../components/MainContainer";
 import CreditsComponent from "../components/Credits";
-import { Box, Tooltip, Typography } from "@mui/material";
+import { Tooltip, Typography } from "@mui/material";
 import { ContentCopy } from "@mui/icons-material";
 
 const Credits = () => {
@@ -48,12 +48,11 @@ const Credits = () => {
             alignItems: "center",
             textAlign: "center",
           }}
+          fontSize={{ xs: "small", sm: "medium" }}
           onClick={copyAddress}
         >
           0xF6Ae5D014AcC7ef79711afBDc02504Cc448394cE
-          <Box ml={1} display="flex" alignItems="center">
-            <ContentCopy fontSize="small" />
-          </Box>
+          <ContentCopy fontSize="small" sx={{ ml: 1 }} />
         </Typography>
       </Tooltip>
       <Copyright />
