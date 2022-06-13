@@ -22,7 +22,7 @@ export const useSales = (
     const fetchData = () =>
       historyFetcher(
         HISTORY_URL({
-          numToFetch: 50,
+          numToFetch: 1000,
           numToSkip: newSales.length,
           direction: "asc",
         })
