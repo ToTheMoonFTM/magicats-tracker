@@ -104,21 +104,21 @@ const Statistics = ({
       dailyAvgRatio:
         dailyCount > 0 ? (dailyRatioTotal / dailyCount).toFixed(3) : 0,
       dailyCount,
-      dailyPriceTotal: dailyPriceTotal + " FTM",
+      dailyPriceTotal: dailyPriceTotal.toFixed(1) + " FTM",
       weeklyAvgPrice:
         (weeklyCount > 0 ? (weeklyPriceTotal / weeklyCount).toFixed(1) : 0) +
         " FTM",
       weeklyAvgRatio:
         weeklyCount > 0 ? (weeklyRatioTotal / weeklyCount).toFixed(3) : 0,
       weeklyCount,
-      weeklyPriceTotal: weeklyPriceTotal + " FTM",
+      weeklyPriceTotal: weeklyPriceTotal.toFixed(1) + " FTM",
       monthlyAvgPrice:
         (monthlyCount > 0 ? (monthlyPriceTotal / monthlyCount).toFixed(1) : 0) +
         " FTM",
       monthlyAvgRatio:
         monthlyCount > 0 ? (monthlyRatioTotal / monthlyCount).toFixed(3) : 0,
       monthlyCount,
-      monthlyPriceTotal: monthlyPriceTotal + " FTM",
+      monthlyPriceTotal: monthlyPriceTotal.toFixed(1) + " FTM",
     };
   }, [sales]);
 
