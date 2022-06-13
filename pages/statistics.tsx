@@ -58,12 +58,15 @@ const Statistics = ({
     dailyAvgPrice,
     dailyAvgRatio,
     dailyCount,
+    dailyPriceTotal,
     weeklyAvgPrice,
     weeklyAvgRatio,
     weeklyCount,
+    weeklyPriceTotal,
     monthlyAvgPrice,
     monthlyAvgRatio,
     monthlyCount,
+    monthlyPriceTotal,
   } = useMemo(() => {
     let dailyPriceTotal = 0;
     let dailyRatioTotal = 0;
@@ -101,18 +104,21 @@ const Statistics = ({
       dailyAvgRatio:
         dailyCount > 0 ? (dailyRatioTotal / dailyCount).toFixed(3) : 0,
       dailyCount,
+      dailyPriceTotal: dailyPriceTotal + " FTM",
       weeklyAvgPrice:
         (weeklyCount > 0 ? (weeklyPriceTotal / weeklyCount).toFixed(1) : 0) +
         " FTM",
       weeklyAvgRatio:
         weeklyCount > 0 ? (weeklyRatioTotal / weeklyCount).toFixed(3) : 0,
       weeklyCount,
+      weeklyPriceTotal: weeklyPriceTotal + " FTM",
       monthlyAvgPrice:
         (monthlyCount > 0 ? (monthlyPriceTotal / monthlyCount).toFixed(1) : 0) +
         " FTM",
       monthlyAvgRatio:
         monthlyCount > 0 ? (monthlyRatioTotal / monthlyCount).toFixed(3) : 0,
       monthlyCount,
+      monthlyPriceTotal: monthlyPriceTotal + " FTM",
     };
   }, [sales]);
 
@@ -184,6 +190,14 @@ const Statistics = ({
             contentColor={blue[400]}
           />
         </Grid>
+        <Grid item xs={12}>
+          <StatCard
+            title="Total Volume"
+            content={dailyPriceTotal}
+            loading={loading}
+            contentColor={blue[400]}
+          />
+        </Grid>
       </Grid>
       <Box my={2} />
       <Typography variant="h3" color={orange[600]} gutterBottom>
@@ -214,6 +228,14 @@ const Statistics = ({
             contentColor={orange[600]}
           />
         </Grid>
+        <Grid item xs={12}>
+          <StatCard
+            title="Total Volume"
+            content={weeklyPriceTotal}
+            loading={loading}
+            contentColor={orange[600]}
+          />
+        </Grid>
       </Grid>
       <Box my={2} />
       <Typography variant="h3" color={red[400]} gutterBottom>
@@ -240,6 +262,14 @@ const Statistics = ({
           <StatCard
             title="Average MP per FTM"
             content={monthlyAvgRatio}
+            loading={loading}
+            contentColor={red[400]}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <StatCard
+            title="Total Volume"
+            content={monthlyPriceTotal}
             loading={loading}
             contentColor={red[400]}
           />
