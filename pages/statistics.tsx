@@ -276,7 +276,6 @@ const Statistics = ({
         </Grid>
       </Grid>
       <Box my={2} />
-
       <Copyright />
     </MainContainer>
   );

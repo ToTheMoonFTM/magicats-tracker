@@ -13,6 +13,7 @@ import {
 } from "../utils/historyUtil";
 import { CatHandler } from "../utils/CatHandler";
 import { useSales } from "../utils/useSales";
+import Copyright from "../components/Copyright";
 
 const History = ({
   sales: defaultSales,
@@ -31,6 +32,7 @@ const History = ({
         totalSalesAmount={totalSales}
       />
       <HistoryTable data={loading ? [] : sales} loading={loading} />
+      <Copyright />
     </MainContainer>
   );
 };
