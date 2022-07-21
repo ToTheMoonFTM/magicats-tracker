@@ -14,7 +14,7 @@ export default function TwitterButton() {
         textDecoration: "none",
       }}
       target="_blank"
-      href="https://twitter.com/FTM_To_The_Moon"
+      href="https://twitter.com/TTM_FTM"
       aria-label="twitter link"
     >
       <Twitter fontSize="large" />

@@ -14,7 +14,7 @@ export default function GithubButton() {
         textDecoration: "none",
       }}
       target="_blank"
-      href="https://github.com/ToTheMoonFTM/magicats-tracker"
+      href="https://github.com/TTMFTM/magicats-tracker"
       aria-label="github link"
     >
       <GitHub fontSize="large" />

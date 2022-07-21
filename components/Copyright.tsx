@@ -9,9 +9,9 @@ export default function Copyright() {
       <MuiLink
         target="_blank"
         color="inherit"
-        href="https://twitter.com/FTM_To_The_Moon"
+        href="https://twitter.com/TTM_FTM"
       >
-        ToTheMoon.FTM
+        TTM.FTM
       </MuiLink>{" "}
       {new Date().getFullYear()}.
     </Typography>
